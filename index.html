@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Анкета</title>
+    <base href="/" />
+    <style>
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #ffd6e8, #e8d6ff);
+    color: #3b1d4a;
+}
+.page { min-height: 100%; display: flex; align-items: center; justify-content: center; padding: 1rem; box-sizing: border-box; }
+.card { background: #fff; border-radius: 24px; padding: 2rem 1.5rem; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 10px 40px rgba(120, 60, 160, .2); }
+h1 { font-size: 1.6rem; margin: 0 0 1.5rem; }
+.buttons { display: flex; gap: 1rem; justify-content: center; }
+.btn { border: 0; border-radius: 14px; padding: .9rem 2rem; font-size: 1.1rem; font-weight: 600; cursor: pointer; color: #fff; transition: transform .1s; }
+.btn:active { transform: scale(.95); }
+.yes { background: #ec4899; }
+.no { background: #8b5cf6; }
+.again { background: #a78bfa; margin-top: 1rem; }
+.result { font-size: 1.2rem; margin: 0; }
+.count { display: block; font-size: 2.6rem; font-weight: 800; color: #ec4899; }
+.small { margin-top: 1.2rem; font-size: .9rem; opacity: .7; }
+
+</style>
+</head>
+<body>
+    <div id="app">Зареждане...</div>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>

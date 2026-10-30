@@ -1,0 +1,6 @@
+{
+  "installCommand": "echo skip",
+  "buildCommand": "bash build.sh",
+  "outputDirectory": "out/wwwroot",
+  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+}

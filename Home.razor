@@ -1,0 +1,91 @@
+@page "/"
+@using System.Globalization
+@inject HttpClient Http
+
+<PageTitle>Анкета</PageTitle>
+
+<main class="page">
+<div class="card">
+    <h1>Мила най-прекрасното момиче ли е?</h1>
+
+    @if (loading)
+    {
+        <p class="small">Зареждане...</p>
+    }
+    else if (!answered)
+    {
+        <div class="buttons">
+            <button class="btn yes" @onclick="VoteYes" disabled="@busy">Да</button>
+            <button class="btn no" @onclick="VoteNo">Не</button>
+        </div>
+        <p class="small">@Shown.ToString("N0", CultureInfo.InvariantCulture) души вече отговориха</p>
+    }
+    else if (wrong)
+    {
+        <p class="result">Грешен отговор 😄 Опитай пак!</p>
+        <button class="btn again" @onclick="Reset">Назад</button>
+    }
+    else
+    {
+        <p class="result">
+            <span class="count">@Shown.ToString("N0", CultureInfo.InvariantCulture)</span>
+            people think the same 💖
+        </p>
+        <button class="btn again" @onclick="Reset">Назад</button>
+    }
+</div>
+</main>
+
+@code {
+    public record VoteDto(int Votes);
+
+    bool loading = true;
+    bool busy;
+    bool answered;
+    bool wrong;
+    int votes;
+
+    // 0 гласа = 9,632; първият глас = 10,000; после +1 за всеки
+    int Shown => votes <= 0 ? 9632 : 9999 + votes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var dto = await Http.GetFromJsonAsync<VoteDto>("api/vote");
+            if (dto != null) votes = dto.Votes;
+        }
+        catch { }
+        loading = false;
+    }
+
+    async Task VoteYes()
+    {
+        busy = true;
+        try
+        {
+            var resp = await Http.PostAsync("api/vote", null);
+            var dto = await resp.Content.ReadFromJsonAsync<VoteDto>();
+            if (dto != null) votes = dto.Votes;
+        }
+        catch
+        {
+            votes++;
+        }
+        busy = false;
+        wrong = false;
+        answered = true;
+    }
+
+    void VoteNo()
+    {
+        wrong = true;
+        answered = true;
+    }
+
+    void Reset()
+    {
+        answered = false;
+        wrong = false;
+    }
+}
